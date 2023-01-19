@@ -3,17 +3,36 @@ import java.util.*;
 
 public class AlmacenCoches {
     public ArrayList<Coche> coches;
+    public static final String FICHERO = "coches.dat";
 
     public AlmacenCoches() {
         coches = new ArrayList<Coche>();
-        try {
-            FileInputStream fis = new FileInputStream("coches.dat");
-            ObjectInputStream ois = new ObjectInputStream(fis);
-            coches = (ArrayList<Coche>) ois.readObject();
-            ois.close();
-            fis.close();
-        } catch (IOException | ClassNotFoundException e) {
-            // Si no existe el archivo, se crea una ArrayList vacía
+        File fis = new File(FICHERO);
+		if (!fis.exists()) {
+            try {
+                System.out.print("[Warning] Archivo no localizado, generando uno");
+                fis.createNewFile();
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+		} else {
+            System.out.println("[Info] Leyendo datos del archivo -> coches.dat");
+            try (FileReader lecturaFichero = new FileReader(FICHERO)) {
+            BufferedReader bufferLectura = new BufferedReader(lecturaFichero);
+            String frase = bufferLectura.readLine();
+            while(frase != null){
+                System.out.println("Frase del fichero: " + frase);
+                frase = bufferLectura.readLine();
+                System.out.println("LINEA: " + frase);
+            }
+            System.out.println("[Info] Fichero leido correctamente");
+            } catch (FileNotFoundException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
@@ -59,7 +78,7 @@ public class AlmacenCoches {
 
     public void terminarPrograma() {
         try {
-            FileOutputStream fos = new FileOutputStream("coches.dat");
+            FileOutputStream fos = new FileOutputStream(FICHERO);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(coches);
             oos.close();

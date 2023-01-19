@@ -1,7 +1,8 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         AlmacenCoches almacen = new AlmacenCoches();
         Scanner scanner = new Scanner(System.in);
         boolean continuar = true;
