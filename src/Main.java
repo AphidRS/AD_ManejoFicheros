@@ -38,8 +38,13 @@ class Main {
                     System.out.print("Introduzca el ID del coche a borrar: ");
                     id = scanner.nextInt();
                     scanner.nextLine();
-                    almacen.deleteCoche(id);
-                    System.out.println("Coche borrado con éxito.");
+                    if (almacen.idExists(id, almacen.coches)){
+                        almacen.deleteCoche(id);
+                        System.out.println("Coche borrado con éxito.");
+                    } else {
+                        System.out.println("El ID introducido no existe");
+                    }
+
                 break;
                 case 3:
                     System.out.print("Introduzca el ID del coche a consultar: ");
