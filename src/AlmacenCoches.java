@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class AlmacenCoches {
-    public ArrayList<Coche> coches;
+    public List<Coche> coches;
     public static final String FICHERO = "coches.dat";
     @SuppressWarnings("unchecked")
     public AlmacenCoches() {
@@ -17,7 +17,8 @@ public class AlmacenCoches {
                 oos.writeObject(coches);
                 oos.close();
             } catch (Exception e) {
-                // TODO: handle exception
+            	System.out.println("Error al crear archivo");
+            	e.printStackTrace();
             }
 		} else {
             System.out.println("[Info] Leyendo datos del archivo -> coches.dat");
@@ -26,6 +27,7 @@ public class AlmacenCoches {
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 coches = (ArrayList<Coche>) ois.readObject();
                 ois.close();
+                fis.close();
                 System.out.println("[Info] Fichero leido correctamente");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
@@ -40,7 +42,7 @@ public class AlmacenCoches {
             coches.add(coche);
     }
 
-    public boolean idExists(int id, ArrayList<Coche> coches) {
+    public boolean idExists(int id, List<Coche> coches) {
         for (Coche c : coches) {
             if (c.getId() == id) {
                 return true;
@@ -49,7 +51,7 @@ public class AlmacenCoches {
         return false;
     }
 
-    public boolean matriculaExists(String matricula, ArrayList<Coche> coches) {
+    public boolean matriculaExists(String matricula, List<Coche> coches) {
         for (Coche c : coches) {
             if (c.getMatricula().equals(matricula)) {
                 return true;
@@ -89,12 +91,9 @@ public class AlmacenCoches {
         }
     }
     public void terminarPrograma() {
-        try {
-            FileOutputStream fos = new FileOutputStream(FICHERO);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(coches);
-            oos.close();
-            fos.close();
+        try (FileOutputStream fos = new FileOutputStream(FICHERO);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);){
+            oos.writeObject(coches);            
         } catch (IOException e) {
             e.printStackTrace();
         }
