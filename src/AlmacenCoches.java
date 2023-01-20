@@ -77,7 +77,11 @@ public class AlmacenCoches {
     public void exportarCochesCSV() {
         try (FileWriter fw = new FileWriter("coches.csv")) {
             for (Coche coche : coches)
-                fw.append(String.valueOf(coche.getId())).append(",").append(coche.getMatricula()).append(",").append(coche.getMarca()).append(",").append(coche.getModelo()).append(",").append(coche.getColor()).append("\n");
+                fw.append(String.valueOf(coche.getId())).append(";")
+                        .append(coche.getMatricula()).append(";")
+                        .append(coche.getMarca()).append(";")
+                        .append(coche.getModelo()).append(";")
+                        .append(coche.getColor()).append("\n");
 
             fw.flush();
         } catch (IOException e) {
