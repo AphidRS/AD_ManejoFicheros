@@ -4,57 +4,68 @@ import java.util.*;
 public class AlmacenCoches {
     public ArrayList<Coche> coches;
     public static final String FICHERO = "coches.dat";
-
+    @SuppressWarnings("unchecked")
     public AlmacenCoches() {
-        coches = new ArrayList<Coche>();
-        File fis = new File(FICHERO);
-		if (!fis.exists()) {
+
+        coches = new ArrayList<>();
+        File data = new File(FICHERO);
+		if (!data.exists()) {
             try {
                 System.out.print("[Warning] Archivo no localizado, generando uno");
-                fis.createNewFile();
+                FileOutputStream fos = new FileOutputStream(FICHERO);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(coches);
+                oos.close();
             } catch (Exception e) {
                 // TODO: handle exception
             }
 		} else {
             System.out.println("[Info] Leyendo datos del archivo -> coches.dat");
-            try (FileReader lecturaFichero = new FileReader(FICHERO)) {
-            BufferedReader bufferLectura = new BufferedReader(lecturaFichero);
-            String frase = bufferLectura.readLine();
-            while(frase != null){
-                System.out.println("Frase del fichero: " + frase);
-                frase = bufferLectura.readLine();
-                System.out.println("LINEA: " + frase);
-            }
-            System.out.println("[Info] Fichero leido correctamente");
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
+            try {
+                FileInputStream fis = new FileInputStream(FICHERO);
+                ObjectInputStream ois = new ObjectInputStream(fis);
+                coches = (ArrayList<Coche>) ois.readObject();
+                ois.close();
+                System.out.println("[Info] Fichero leido correctamente");
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
     }
 
     public void addCoche(Coche coche) {
-        coches.add(coche);
+        if(idExists(coche.getId(),coches) || matriculaExists(coche.getMatricula(),coches))
+            System.out.println("El id o la matrícula ya existen.");
+        else
+            coches.add(coche);
+    }
+
+    public boolean idExists(int id, ArrayList<Coche> coches) {
+        for (Coche c : coches) {
+            if (c.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean matriculaExists(String matricula, ArrayList<Coche> coches) {
+        for (Coche c : coches) {
+            if (c.getMatricula().equals(matricula)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void deleteCoche(int id) {
-        Iterator<Coche> iterator = coches.iterator();
-        while (iterator.hasNext()) {
-            Coche coche = iterator.next();
-            if (coche.getId() == id)
-                iterator.remove();
-        }
+        coches.removeIf(coche -> coche.getId() == id);
     }
     public Coche getCoche(int id) {
-        for (Coche coche : coches) {
-            if (coche.getId() == id) {
-                return coche;
-            }
-        }
-        return null;
+        return coches.stream()
+                .filter(coche -> coche.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public void listCoches() {
@@ -64,18 +75,15 @@ public class AlmacenCoches {
     }
 
     public void exportarCochesCSV() {
-        try {
-            FileWriter fw = new FileWriter("coches.csv");
-            for (Coche coche : coches) {
-                fw.append(coche.getId() + "," + coche.getMatricula() + "," + coche.getMarca() + "," + coche.getModelo() + "," + coche.getColor() + "\n");
-            }
+        try (FileWriter fw = new FileWriter("coches.csv")) {
+            for (Coche coche : coches)
+                fw.append(String.valueOf(coche.getId())).append(",").append(coche.getMatricula()).append(",").append(coche.getMarca()).append(",").append(coche.getModelo()).append(",").append(coche.getColor()).append("\n");
+
             fw.flush();
-            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
     public void terminarPrograma() {
         try {
             FileOutputStream fos = new FileOutputStream(FICHERO);

@@ -1,8 +1,7 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 class Main {
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) {
         AlmacenCoches almacen = new AlmacenCoches();
         Scanner scanner = new Scanner(System.in);
         boolean continuar = true;
@@ -33,34 +32,29 @@ class Main {
                     System.out.print("Introduzca el color del coche: ");
                     String color = scanner.nextLine();
                     Coche coche = new Coche(id, matricula, marca, modelo, color);
-                    if (!almacen.coches.contains(coche)) {
-                        almacen.addCoche(coche);
-                        System.out.println("Coche añadido con éxito.");
-                    } else {
-                        System.out.println("Ya existe un coche con ese ID o matrícula.");
-                    }
-                    break;
+                    almacen.addCoche(coche);
+                break;
                 case 2:
                     System.out.print("Introduzca el ID del coche a borrar: ");
                     id = scanner.nextInt();
                     scanner.nextLine();
                     almacen.deleteCoche(id);
                     System.out.println("Coche borrado con éxito.");
-                    break;
+                break;
                 case 3:
                     System.out.print("Introduzca el ID del coche a consultar: ");
                     id = scanner.nextInt();
                     scanner.nextLine();
                     Coche cocheConsultado = almacen.getCoche(id);
-                    if (cocheConsultado != null) {
-                        System.out.println("ID: " + cocheConsultado.getId() + " - Matrícula: " + cocheConsultado.getMatricula() + " - Marca: " + cocheConsultado.getMarca() + " - Modelo: " + cocheConsultado.getModelo() + " - Color: " + cocheConsultado.getColor());
-                    } else {
-                        System.out.println("No existe un coche con ese ID.");
-                    }
-                    break;
+                if (cocheConsultado != null) {
+                    System.out.println("ID: " + cocheConsultado.getId() + " - Matrícula: " + cocheConsultado.getMatricula() + " - Marca: " + cocheConsultado.getMarca() + " - Modelo: " + cocheConsultado.getModelo() + " - Color: " + cocheConsultado.getColor());
+                } else {
+                    System.out.println("No existe un coche con ese ID.");
+                }
+                break;
                 case 4:
                     almacen.listCoches();
-                    break;
+                break;
                 case 5:
                     almacen.terminarPrograma();
                     continuar = false;
@@ -71,7 +65,7 @@ class Main {
                     break;
                 default:
                     System.out.println("Opción no válida, por favor seleccione una opción del menú.");
-                    break;
+                break;
             }
         }
         scanner.close();
