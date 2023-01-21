@@ -19,7 +19,7 @@ class Main {
             scanner.nextLine();
 
             switch (opcion) {
-                case 1 -> {
+                case 1: 
                     System.out.print("Introduzca el ID del coche: ");
                     while (!scanner.hasNextInt()) {
                         System.out.println("Por favor, introduzca un número");
@@ -38,15 +38,16 @@ class Main {
                     String color = scanner.nextLine();
                     Coche coche = new Coche(id, matricula, marca, modelo, color);
                     almacen.addCoche(coche);
-                }
-                case 2 -> {
+                    break;
+            
+                case 2: 
                     System.out.print("Introduzca el ID del coche a borrar: ");
                     while (!scanner.hasNextInt()) {
                         System.out.println("Por favor, introduzca un número");
                         scanner.nextLine();
                         System.out.print("Introduzca el ID del coche a borrar: ");
                     }
-                    int id = scanner.nextInt();
+                    id = scanner.nextInt();
                     scanner.nextLine();
                     if (almacen.idExists(id, almacen.coches)) {
                         almacen.deleteCoche(id);
@@ -54,15 +55,15 @@ class Main {
                     } else {
                         System.out.println("El ID introducido no existe");
                     }
-                }
-                case 3 -> {
+                    break;
+                case 3: 
                     System.out.print("Introduzca el ID del coche a consultar: ");
                     while (!scanner.hasNextInt()) {
                         System.out.println("Por favor, introduzca un número");
                         scanner.nextLine();
                         System.out.print("Introduzca el ID del coche a consultar: ");
                     }
-                    int id = scanner.nextInt();
+                    id = scanner.nextInt();
                     scanner.nextLine();
                     Coche cocheConsultado = almacen.getCoche(id);
                     if (cocheConsultado != null) {
@@ -70,17 +71,17 @@ class Main {
                     } else {
                         System.out.println("No existe un coche con ese ID.");
                     }
-                }
-                case 4 -> almacen.listCoches();
-                case 5 -> {
+                    break;
+                case 4: almacen.listCoches();break;
+                case 5:
                     almacen.terminarPrograma();
                     continuar = false;
-                }
-                case 6 -> {
+                    break;
+                case 6:
                     almacen.exportarCochesCSV();
                     System.out.println("Coches exportados con éxito.");
-                }
-                default -> System.out.println("Opción no válida, por favor seleccione una opción del menú.");
+                    break;
+                default: System.out.println("Opción no válida, por favor seleccione una opción del menú.");break;
             }
         }
         scanner.close();

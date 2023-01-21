@@ -61,8 +61,16 @@ public class AlmacenCoches {
     }
 
     public void deleteCoche(int id) {
-        coches.removeIf(coche -> coche.getId() == id);
+        if (idExists(id, coches)) {
+            for (Coche c : coches) {
+                if (c.getId() == id) {
+                    coches.remove(c);
+                    return;
+                }
+            }
+        }
     }
+
     public Coche getCoche(int id) {
         return coches.stream()
                 .filter(coche -> coche.getId() == id)
