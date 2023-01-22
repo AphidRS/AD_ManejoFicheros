@@ -10,24 +10,19 @@ public class AlmacenCoches {
         coches = new ArrayList<>();
         File data = new File(FICHERO);
 		if (!data.exists()) {
-            try {
-                System.out.print("[Warning] Archivo no localizado, generando uno");
-                FileOutputStream fos = new FileOutputStream(FICHERO);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(coches);
-                oos.close();
+            try (FileOutputStream fos = new FileOutputStream(FICHERO);
+                ObjectOutputStream oos = new ObjectOutputStream(fos);){
+            	System.out.print("[Warning] Archivo no localizado, generando uno");
+                oos.writeObject(coches);                
             } catch (Exception e) {
             	System.out.println("Error al crear archivo");
             	e.printStackTrace();
             }
 		} else {
             System.out.println("[Info] Leyendo datos del archivo -> coches.dat");
-            try {
-                FileInputStream fis = new FileInputStream(FICHERO);
-                ObjectInputStream ois = new ObjectInputStream(fis);
-                coches = (ArrayList<Coche>) ois.readObject();
-                ois.close();
-                fis.close();
+            try (FileInputStream fis = new FileInputStream(FICHERO);
+                ObjectInputStream ois = new ObjectInputStream(fis);){
+                coches = (ArrayList<Coche>) ois.readObject();                
                 System.out.println("[Info] Fichero leido correctamente");
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
