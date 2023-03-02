@@ -34,4 +34,10 @@ public class Coche implements Serializable {
 	public String getColor() {
 		return color;
 	}
+
+	@Override
+	public String toString() {
+		return "Coche [id=" + id + ", matricula=" + matricula + ", marca=" + marca + ", modelo=" + modelo + ", color="
+				+ color + ";";
+	}
 }
